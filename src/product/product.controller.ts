@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post, Put, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put, Request, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { ProductService } from './product.service';
 import { JwtAuthGuard } from 'src/jwt-auth.guard';
@@ -18,8 +18,8 @@ export class ProductController {
     @ApiResponse({ status: 201, description: 'Product created successfully' })
     @ApiResponse({ status: 400, description: 'Bad request' })
     @ApiResponse({ status: 401, description: 'Unauthorized' })
-    async createProduct(@Body() createProductDto: CreateProductDto) {
-        return this.productService.createProduct(createProductDto);
+    async createProduct(@Body() createProductDto: CreateProductDto, @Request() req: any) {
+        return this.productService.createProduct(createProductDto, req.user.id);
     }
 
     @Get('getAll')
@@ -53,6 +53,17 @@ export class ProductController {
     async updateProduct(@Param('id') id: string, @Body() updateProductDto: UpdateProductDto) {
         return this.productService.updateProduct(+id, updateProductDto);
     }
+
+    @Delete('delete/:id')
+    @UseGuards(JwtAuthGuard)
+    @ApiBearerAuth()
+    @ApiOperation({ summary: 'Delete a product' })
+    @ApiResponse({ status: 200, description: 'Product deleted successfully' })
+    @ApiResponse({ status: 404, description: 'Product not found' })
+    async deleteProduct(@Param('id') id: string) {
+        return this.productService.deleteProduct(+id);
+    }
+
 
 
 }

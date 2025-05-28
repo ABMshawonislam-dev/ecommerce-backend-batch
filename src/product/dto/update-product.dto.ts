@@ -1,5 +1,5 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { IsNumber, IsOptional, IsString } from "class-validator";
+import { IsNotEmpty, IsNumber, IsOptional, IsString } from "class-validator";
 
 export class UpdateProductDto {
     @ApiProperty({description: 'Product name', example: 'Product A'})
@@ -21,4 +21,9 @@ export class UpdateProductDto {
     @IsNumber()
     @IsOptional()
     stock: number;
+
+    @ApiProperty({description: 'Store ID', example: 1})
+    @IsNotEmpty()
+    @IsNumber()
+    storeId: number;
 }

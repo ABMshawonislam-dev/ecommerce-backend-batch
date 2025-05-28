@@ -1,4 +1,6 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { User } from "./user.entity";
+import { Store } from "./store.entity";
 
 
 @Entity()
@@ -17,4 +19,10 @@ export class Product{
 
     @Column()
     stock: number;
+
+    @ManyToOne(() => User, (user) => user.id)
+    vendor: User;
+
+    @ManyToOne(()=> Store, (store) => store.id)
+    store: Store;
 }
