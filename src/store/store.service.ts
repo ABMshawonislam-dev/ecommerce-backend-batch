@@ -5,6 +5,7 @@ import { User } from 'src/entity/user.entity';
 import { Repository } from 'typeorm';
 import { CreateStoreDto } from './dto/create-store.dto';
 import { UpdateStoreDto } from './dto/update-store.dto';
+import { Product } from 'src/entity/product.entity';
 
 @Injectable()
 export class StoreService {
@@ -13,6 +14,8 @@ export class StoreService {
         private readonly storeRepository: Repository<Store>,
         @InjectRepository(User)
         private readonly userRepository: Repository<User>,
+        @InjectRepository(Product)
+        private readonly productRepository: Repository<Product>,
 
     ) {}
 
@@ -32,8 +35,16 @@ export class StoreService {
 
     }
 
-    async getAll(): Promise<Store[]> {
-        return this.storeRepository.find({ relations: ['owner'] });
+    async getAll(): Promise<any[]> {
+        const stores = await this.storeRepository.find({ relations: ['owner', 'product', 'product.reviews'] });
+
+        return Promise.all(
+            stores.map(async (store)=>{
+                const averageRating = await this.calculateStoreReview(store.id)
+                return {...store,averageRating}
+            })
+        )
+
     }
 
     async getStoreById(id: number): Promise<Store>{
@@ -54,6 +65,24 @@ export class StoreService {
         }
         const updatedStore = Object.assign(store, updateStoreDto);
         return this.storeRepository.save(updatedStore);
+    }
+
+
+    private async calculateStoreReview(storeId: number){
+        const product = await this.productRepository.find({
+            where: {store: {id: storeId}},
+            relations: ['reviews'],
+        })
+
+        const allRatings = product.flatMap((product)=>product.reviews.map((review)=> review.rating))
+
+        if( allRatings.length === 0){
+            return 0
+        }
+
+        const average = allRatings.reduce((sum,rating)=> sum + rating, 0) / allRatings.length
+        return average.toFixed(2)
+
     }
 
 // ========= 

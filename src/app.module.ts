@@ -9,6 +9,9 @@ import { ProductModule } from './product/product.module';
 import { Product } from './entity/product.entity';
 import { ImageModule } from './image/image.module';
 import { StoreModule } from './store/store.module';
+import { ReviewModule } from './review/review.module';
+import { Review } from './entity/review.entity';
+import { Store } from './entity/store.entity';
 
 @Module({
   imports: [
@@ -19,13 +22,14 @@ import { StoreModule } from './store/store.module';
       username: 'postgres',
       password: '123Shawon123',
       database: 'postgres',
-      entities: [User,Product,StoreModule],
+      entities: [User,Product,Store,Review],
       synchronize: true, // Set to false in production
     }),
     AuthModule,
     ProductModule,
     ImageModule,
-    StoreModule
+    StoreModule,
+    ReviewModule
   ],
   controllers: [AppController],
   providers: [AppService],

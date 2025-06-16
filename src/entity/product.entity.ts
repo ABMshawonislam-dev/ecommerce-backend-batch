@@ -1,6 +1,7 @@
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { User } from "./user.entity";
 import { Store } from "./store.entity";
+import { Review } from "./review.entity";
 
 
 @Entity()
@@ -25,4 +26,7 @@ export class Product{
 
     @ManyToOne(()=> Store, (store) => store.id)
     store: Store;
+
+    @OneToMany(()=> Review, (review)=> review.product)
+    reviews: Review[]
 }
