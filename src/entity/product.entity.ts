@@ -2,6 +2,7 @@ import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "ty
 import { User } from "./user.entity";
 import { Store } from "./store.entity";
 import { Review } from "./review.entity";
+import { Category } from "./category.entity";
 
 
 @Entity()
@@ -28,5 +29,10 @@ export class Product{
     store: Store;
 
     @OneToMany(()=> Review, (review)=> review.product)
-    reviews: Review[]
+    reviews: Review[];
+
+
+    @ManyToOne(()=> Category, (category)=> category.product)
+    category: Category
+
 }

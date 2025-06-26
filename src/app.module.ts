@@ -12,6 +12,7 @@ import { StoreModule } from './store/store.module';
 import { ReviewModule } from './review/review.module';
 import { Review } from './entity/review.entity';
 import { Store } from './entity/store.entity';
+import { CategoryModule } from './category/category.module';
 
 @Module({
   imports: [
@@ -29,7 +30,8 @@ import { Store } from './entity/store.entity';
     ProductModule,
     ImageModule,
     StoreModule,
-    ReviewModule
+    ReviewModule,
+    CategoryModule
   ],
   controllers: [AppController],
   providers: [AppService],
