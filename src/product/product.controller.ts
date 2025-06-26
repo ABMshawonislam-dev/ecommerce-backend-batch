@@ -50,8 +50,8 @@ export class ProductController {
     @ApiResponse({ status: 200, description: 'Product updated successfully' })
     @ApiResponse({ status: 404, description: 'Product not found' })
     @ApiResponse({ status: 400, description: 'Bad request' })
-    async updateProduct(@Param('id') id: string, @Body() updateProductDto: UpdateProductDto) {
-        return this.productService.updateProduct(+id, updateProductDto);
+    async updateProduct(@Param('id') id: string, @Body() updateProductDto: UpdateProductDto, @Request() req: any) {
+        return this.productService.updateProduct(+id, updateProductDto,req.user.id);
     }
 
     @Delete('delete/:id')

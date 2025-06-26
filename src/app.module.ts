@@ -13,6 +13,7 @@ import { ReviewModule } from './review/review.module';
 import { Review } from './entity/review.entity';
 import { Store } from './entity/store.entity';
 import { CategoryModule } from './category/category.module';
+import { CouponModule } from './coupon/coupon.module';
 
 @Module({
   imports: [
@@ -31,7 +32,8 @@ import { CategoryModule } from './category/category.module';
     ImageModule,
     StoreModule,
     ReviewModule,
-    CategoryModule
+    CategoryModule,
+    CouponModule
   ],
   controllers: [AppController],
   providers: [AppService],
